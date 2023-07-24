@@ -1,0 +1,43 @@
+{
+  "name": "upclick",
+  "version": "0.1.0",
+  "description": "A simple gcp pub/sub triggered function to target collect uptime metrics",
+  "main": "index.js",
+  "repository": "https://github.com/nellicus/upclick-clickhouse",
+  "author": "Antonio Bonuccelli",
+  "license": "MIT",
+  "config": {
+    "gcp_project": "support-services-377714",
+    "gcp_service_account": "upclick-demo@support-services-377714.iam.gserviceaccount.com"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/luxon": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.38.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "scripts": {
+    "build-local": "yarn clean && tsc",
+    "clean": "rm -rf dist/",
+    "deploy": "yarn build-local && yarn prep:dist && cd dist && gcloud functions deploy $npm_package_name --source=. --gen2 --trigger-topic=$npm_package_name-pubsub-topic --runtime=nodejs20 --memory=128MiB --entry-point=upclick --project $npm_package_config_gcp_project --service-account=$npm_package_config_gcp_service_account",
+    "prep:dist": "cp package.json dist/ && cp .env.local.yaml dist/.env.yaml",
+    "start:local": "yarn build-local && cp .env.local.yaml dist/.env.yaml && cp .env.local.yaml .env.yaml && functions-framework --source=dist/index.js --target=upclick ",
+    "undeploy": "gcloud functions delete $npm_package_name --project $npm_package_config_gcp_project"
+  },
+  "dependencies": {
+    "@google-cloud/functions": "^2.4.1",
+    "@google-cloud/functions-framework": "^3.2.0",
+    "@google/events": "^5.4.0",
+    "@maxmind/geoip2-node": "^4.1.0",
+    "axios": "^1.3.4",
+    "dotenv": "^16.0.3",
+    "joi": "^17.8.3",
+    "luxon": "^3.3.0"
+  }
+}
