@@ -30,7 +30,7 @@ You can get ClickHouse cloud trial [here](https://clickhouse.cloud/signUp) and a
 
 ### ClickHouse
 
-You will need to create a table in your `defaul` database using this SQL [CREATE TABLE](./commands/CREATE_TABLE.sql) statement.
+You will need to create a table in your `default` database using this SQL [CREATE TABLE](./commands/CREATE_TABLE.sql) statement.
 
 ### Setting up the repo locally
 
