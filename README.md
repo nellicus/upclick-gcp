@@ -106,7 +106,7 @@ this will send the base64 encoded representation of this payload:
 {"target":"www.clickhouse.com"}
 ```
 
-See the [deploy-all-regions.sh](/commands/deploy-all-regions.sh) script for generating a new payload using different `target` value.
+See the [pub-sub-invoke-local.sh](/commands/pub-sub-invoke-local.sh) script for generating a new payload using different `target` value.
 
 So, in a new terminal, invoke the command:
 
