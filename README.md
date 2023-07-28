@@ -6,14 +6,12 @@ A demo 2nd gen Pub/Sub NodeJS cloud function triggered by GCP scheduler via pub/
 The target website is tested for latency and related captured metrics, enriched by geo data using MaxMind geo-ip lite, are sent to ClickHouse Cloud.
 
 
-## Technology stack
+### Tech stack
 
 - GCP: 2nd Gen Pub/Sub Cloud Function,pub/sub topic, cloud scheduler
 - ClickHouse
 - NodeJS  
 
-
-## Setting it up
 
 ### Requirements
 
@@ -22,16 +20,31 @@ Beside having a GCP project active, you will need to have the following installe
 - yarn 1.22.19
 - node 20.3.0
 - gcloud (CLI)
+- ClickHouse Cloud trial (or run your own locally)
+- Max Mind GEO Lite trial
   
+You can get ClickHouse cloud trial [here](https://clickhouse.cloud/signUp) and a Max Mind Lite account [here](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data).
+
+
+## Deployment
+
+### ClickHouse
+
+You will need to create a table in your `defaul` database using this SQL [CREATE TABLE](./commands/CREATE_TABLE.sql) statement.
 
 ### Setting up the repo locally
 
-This will clone this repository on your local machine then install the required modules:
+The below commands will clone this repository on your local machine then install the required modules:
 
 ```
 git clone https://github.com/nellicus/upclick-gcp
 cd upclick-gcp
 yarn install
+```
+
+will yield:
+
+```
 Cloning into 'upclick-gcp'...
 remote: Enumerating objects: 32, done.
 remote: Counting objects: 100% (32/32), done.
@@ -48,7 +61,7 @@ yarn install v1.22.19
 ✨  Done in 1.65s.
 ```
 
-### Secrets
+### Create secrets file
 
 Create a file named `.env.local` at the root of the project as:
 
@@ -66,7 +79,7 @@ MAXMIND_LICENSE_KEY: your_max_mind_license_key
 ```
 
 Replace these values with ones specific to your environment.
-You can get ClickHouse cloud trial [here](https://clickhouse.cloud/signUp) and a Max Mind Lite account [here](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data).
+
 
 ## Launching locally
 
@@ -115,6 +128,11 @@ Serving function...
 Function: upclick
 Signature type: cloudevent
 URL: http://localhost:8080/
+```
+
+these output lines below will indicate correct execution:
+
+```
 upclick function started...
 Pub/Sub payload received: www.clickhouse.com
 Sending metrics to ClickHouse...
@@ -122,12 +140,13 @@ Sending metrics to ClickHouse...
 done...bye!
 ```
 
-The last three lines above indicate correct execution of the function.
 
 
 ## Deploying on GCP
 
 A few preliminarty steps are required before we can launch this on GPC.
+
+You will want to make sure you're correctly set up with GCP CLI access using `gcloud info`, this will print all the info related to your gcloud configuration including gcp-project in use.
 
 First of all, the function will refer to a service account, that will be used by the function also in order to assign it the necessary permissions:
 
@@ -143,11 +162,11 @@ Since our function expects to find already a [pub/sub topic](https://cloud.googl
 Then, in order to have your JSON payloads regularly pushed to your topic `upclick-pubsub-topic`, you will want to create a cloud scheduler, again this can be achieved both from GCP UI or `gcloud` CLI:
 
 ```
-gcloud scheduler jobs create pubsub upclick-test --topic upclick-pubsub-topic --schedule "* * * * *" --message-body '{"target":"www.clickhouse.com"}' --location europe-west1
-name: projects/support-services-377714/locations/europe-west1/jobs/upclick-test
+gcloud scheduler jobs create pubsub upclick-cloud-scheduler --topic upclick-pubsub-topic --schedule "* * * * *" --message-body '{"target":"www.clickhouse.com"}' --location europe-west1
+name: projects/my-gcp-project/locations/europe-west1/jobs/upclick-cloud-scheduler
 pubsubTarget:
   data: eyJ0YXJnZXQiOiJ3d3cuY2xpY2tob3VzZS5jb20ifQ==
-  topicName: projects/support-services-377714/topics/upclick-pubsub-topic
+  topicName: projects/my-gcp-project/topics/upclick-cloud-scheduler
 retryConfig:
   maxBackoffDuration: 3600s
   maxDoublings: 16
@@ -160,12 +179,11 @@ userUpdateTime: '2023-07-28T12:48:03Z'
 ```
 
 
-
-Once that's done you can go ahead with below steps.
-
-You will want to make sure you're correctly set up with GCP CLI access using `gcloud info`, this will print all the info related to your gcloud configuration including gcp-project in use.
+Once that's done, you will have these JSON payloads pushed into your topic once a minute, so you can go ahead with below steps to actually deploy the function.
 
 In order to deploy to all regions (`gcloud functions` doesn't yet allow deploying to multiple regions in one go), we use a little bash script [](./commands/deploy-all-regions.sh) to help ourselves, feeding the $gcp_region value to the `yarn deploy` script. 
+
+Below the function execution output... truncated after the second region instance starts to be deployed:
 
 ```
 ./commands/deploy-all-regions.sh
