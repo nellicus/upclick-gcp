@@ -41,10 +41,10 @@ const SECRETS_ENV_VAR_JOI_SCHEMA = joi
 
 export const loadEnv = () => {
   // path to secrets
-  const appEnvFilePath = path.join(__dirname, '.env.yaml');
+  const appEnvFilePath = path.join(__dirname, '.env');
 
   // load file
-  console.log(`Loading env from ${path.join(__dirname, '../.env.yaml')}`);
+  console.log(`Loading env from ${path.join(__dirname, '../.env')}`);
 
   // load with .env
   dotenv.config({ path: appEnvFilePath });

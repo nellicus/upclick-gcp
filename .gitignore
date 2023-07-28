@@ -12,6 +12,7 @@ yarn-error.log
 *.temp
 *.sample.json
 *.json
+.env*
 .DS_Store
 
 # ALLOWED
