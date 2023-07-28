@@ -1,4 +1,4 @@
-# UpClick
+# UpClick GCP Demo
 
 ## Description
 
