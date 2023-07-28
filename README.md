@@ -106,7 +106,7 @@ this will send the base64 encoded representation of this payload:
 {"target":"www.clickhouse.com"}
 ```
 
-See the [](./commands/deploy-all-regions.sh) file for generating a new payload using different `target` value.
+See the [](/commands/deploy-all-regions.sh) file for generating a new payload using different `target` value.
 
 So, in a new terminal, invoke the command:
 
@@ -265,4 +265,26 @@ At this stage you should see in your GCP project, under Cloud functions menu:
 
 ![](img/upclick-deploying-functions.png)
 
-in a few minutes all the four regions listed in the bash helper script should be up and running, and triggering every time the cloud scheduler previously setup will push a JSON payload to the related pub/sub topic on GPC; in a matter of minutes, you should start receiving data from all your cloud function in your ClickHouse Cloud instance!
+in a few minutes all the four regions listed in the bash helper script should be up and running, and triggering every time the cloud scheduler previously setup will push a JSON payload to the related pub/sub topic on GPC; in a matter of minutes, you should start receiving data from all your cloud function in your ClickHouse Cloud instance:
+
+```sql
+clickhouse-cloud :) SELECT count(*),target,status_code,avg(latency) FROM upclick_metrics GROUP BY target,status_code
+
+SELECT
+    count(*),
+    target,
+    status_code,
+    avg(latency)
+FROM upclick_metrics
+GROUP BY
+    target,
+    status_code
+
+Query id: d6b36a23-4ea8-4766-978f-0c3aaec45b1d
+
+┌─count()─┬─target─────────────┬─status_code─┬───────avg(latency)─┐
+│     197 │ www.clickhouse.com │         200 │ 1693.1725888324872 │
+└─────────┴────────────────────┴─────────────┴────────────────────┘
+
+1 row in set. Elapsed: 0.003 sec.
+```
