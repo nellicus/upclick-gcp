@@ -58,5 +58,22 @@ This will clone this repository on your local machine then install the required 
 git clone https://github.com/nellicus/upclick-gcp
 cd upclick-gcp
 yarn install
+Cloning into 'upclick-gcp'...
+remote: Enumerating objects: 27, done.
+remote: Counting objects: 100% (27/27), done.
+remote: Compressing objects: 100% (22/22), done.
+remote: Total 27 (delta 5), reused 26 (delta 4), pack-reused 0
+Receiving objects: 100% (27/27), 61.62 KiB | 852.00 KiB/s, done.
+Resolving deltas: 100% (5/5), done.
+yarn install v1.22.19
+[1/5] 🔍  Validating package.json...
+[2/5] 🔍  Resolving packages...
+[3/5] 🚚  Fetching packages...
+[4/5] 🔗  Linking dependencies...
+[5/5] 🔨  Building fresh packages...
+success Saved lockfile.
+✨  Done in 2.96s.
 ```
+
+to launch locally:
 
