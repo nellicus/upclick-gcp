@@ -106,7 +106,7 @@ this will send the base64 encoded representation of this payload:
 {"target":"www.clickhouse.com"}
 ```
 
-See the [](/commands/deploy-all-regions.sh) file for generating a new payload using different `target` value.
+See the [deploy-all-regions.sh](/commands/deploy-all-regions.sh) script for generating a new payload using different `target` value.
 
 So, in a new terminal, invoke the command:
 
@@ -181,7 +181,7 @@ userUpdateTime: '2023-07-28T12:48:03Z'
 
 Once that's done, you will have these JSON payloads pushed into your topic once a minute, so you can go ahead with below steps to actually deploy the function.
 
-In order to deploy to all regions (`gcloud functions` doesn't yet allow deploying to multiple regions in one go), we use a little bash script [](./commands/deploy-all-regions.sh) to help ourselves, feeding the $gcp_region value to the `yarn deploy` script. 
+In order to deploy to all regions (`gcloud functions` doesn't yet allow deploying to multiple regions in one go), we use a little [bash script](./commands/deploy-all-regions.sh) to help ourselves, feeding the $gcp_region value to the `yarn deploy` script. 
 
 Below the function execution output... truncated after the second region instance starts to be deployed:
 
