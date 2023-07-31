@@ -2,7 +2,7 @@
 
 ## Description
 
-A demo 2nd gen Pub/Sub NodeJS cloud function triggered by GCP scheduler via pub/sub messages containing a target website.
+A demo GCP 2nd gen Pub/Sub NodeJS cloud function triggered by scheduler via pub/sub messages containing a target website.
 The target website is tested for latency and related captured metrics, enriched by geo data using MaxMind geo-ip lite, are sent to ClickHouse Cloud.
 
 
@@ -144,11 +144,11 @@ done...bye!
 
 ## Deploying on GCP
 
-A few preliminarty steps are required before we can launch this on GPC.
+A few preliminary steps are required before we can launch this on GPC.
 
 You will want to make sure you're correctly set up with GCP CLI access using `gcloud info`, this will print all the info related to your gcloud configuration including gcp-project in use.
 
-First of all, the function will refer to a service account, that will be used by the function also in order to assign it the necessary permissions:
+First of all, the function will refer to a service account, that will be used by the function also in order to inherit it the necessary permissions, so the service account will need to be granted the below permissions:
 
 - Cloud Run Developer
 - Pub/Sub Lite Editor
