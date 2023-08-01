@@ -85,7 +85,7 @@ const axiosPostClickhouseInsert = async (
 
 const getGeoData = async (ip: string) => {
   const client = new WebServiceClient(
-    '892308',
+    APPENV.secret.maxMindAccountId,
     APPENV.secret.maxMindLicenseKey,
     { host: 'geolite.info' },
   );

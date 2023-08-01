@@ -13,7 +13,6 @@ cloudEvent('upclick', async (cloudevent: any) => {
   const jsonPayload: MessagePublishedData = cloudevent.data;
   const base64Data = jsonPayload.message?.data;
 
-  // check message.data
   if (!base64Data) {
     throw new Error('Invalid data!');
   }

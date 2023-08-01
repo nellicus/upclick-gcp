@@ -10,7 +10,7 @@ interface Config {
 interface Secret {
   clickhouseUsername: string;
   clickhousePassword: string;
-  maxMindAccountId: number;
+  maxMindAccountId: string;
   maxMindLicenseKey: string;
 }
 
